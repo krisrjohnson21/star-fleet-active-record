@@ -1,0 +1,40 @@
+body {
+  background-color: #37becc;
+  color: #000000;
+}
+
+a,
+a:visited {
+  text-decoration: none;
+}
+
+.container {
+  max-width: 1024px;
+  margin: 0 auto;
+}
+
+.top-bar {
+  background-color: #F0B744;
+}
+
+.top-bar-section {
+  display: inline-block;
+  float: right;
+}
+
+.logo {
+  display: inline-block;
+  margin: 1em 0;
+  font-weight: 600;
+}
+
+.flash {
+  font-size: 24px;
+  font-weight: bold;
+  padding: 1em;
+}
+
+.error {
+  color: #ff0000;
+  font-weight: bold;
+}
