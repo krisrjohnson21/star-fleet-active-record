@@ -5,8 +5,6 @@ set :bind, '0.0.0.0'  # bind to all interfaces
 
 enable :sessions
 
-# Any classes you add to the models folder will automatically be made available in this server file
-
 get '/' do
   redirect '/starships'
 end
@@ -38,31 +36,19 @@ post '/starships/new' do
   @ship_class = params["ship_class"]
   @location = params["location"]
 
-  if @name.strip != "" && @ship_class.strip != "" && @location.strip != ""
-    Ship.create(
-      name: @name,
-      ship_class: @ship_class,
-      location: @location
-    )
-    id = Ship.last.id
+  starship = Ship.new(
+    name: @name,
+    ship_class: @ship_class,
+    location: @location
+  )
+  id = Ship.last.id
 
+  if starship.save
     flash[:notice] = 'New Starship was successfully created.'
     redirect "/starships/#{id}"
   else
-    @errors = "Error!<br>"
-
-    if @name.strip == ""
-      @errors += "Please provide a name.<br>"
-    end
-
-    if @ship_class.strip == ""
-      @errors += "Please provide a class for your ship.<br>"
-    end
-
-    if @location.strip == ""
-      @errors += "Please provide a location for your ship.<br>"
-    end
-    erb :'starships/new'
+    flash.now[:notice] = starship.errors.full_messages.to_sentence
+    erb :'/starships/new'
   end
 end
 
@@ -72,32 +58,20 @@ post '/crew-members' do
   @specialty = params["specialty"]
   @ship = Ship.find(params["ship"])
 
-  if @first_name.strip != "" && @last_name.strip != "" && @specialty.strip != ""
-    Member.create(
-      first_name: @first_name,
-      last_name: @last_name,
-      specialty: @specialty,
-      ship: @ship
-    )
+  member = Member.new(
+    first_name: @first_name,
+    last_name: @last_name,
+    specialty: @specialty,
+    ship: @ship
+  )
 
+  if member.save
     flash[:notice] = 'New crew member was successfully created.'
     redirect "/crew-members"
   else
-    @errors = "Error!<br>"
-
-    if @first_name.strip == ""
-      @errors += "Please provide a first name.<br>"
-    end
-
-    if @last_name.strip == ""
-      @errors += "Please provide a last name.<br>"
-    end
-
-    if @specialty.strip == ""
-      @errors += "Please provide a specialty for your crew member.<br>"
-    end
+    flash.now[:notice] = member.errors.full_messages.to_sentence
+    erb :'starships/show'
   end
-  erb :'starships/show'
 end
 
 get '/starships/:id' do
