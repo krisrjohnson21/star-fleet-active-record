@@ -1,0 +1,19 @@
+<h1>Add A New Crew Member</h1>
+
+<br><h3 class="error"><%= @errors %></h3>
+
+<form action="/crew-members" method="post">
+  <label for="first_name">Crew Member First Name:
+    <input type="text" id="first_name" name="first_name" value="<%= @first_name %>">
+  </label>
+
+  <label for="last_name">Crew Member Last Name:
+    <input type="text" id="last_name" name="last_name" value="<%= @last_name %>">
+  </label>
+
+  <label for="specialty">Crew Member Specialty:
+    <input type="text" id="specialty" name="specialty" value="<%= @specialty %>">
+  </label>
+
+  <input type="Submit" value="Add Crew Member">
+</form>

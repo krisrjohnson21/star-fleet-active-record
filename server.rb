@@ -20,6 +20,15 @@ get '/starships' do
   erb :'starships/index'
 end
 
+get '/crew-members' do
+  @members = Member.order(:last_name)
+  # Use a custom Starship class that inherits from ActiveRecord to retrieve your database objects
+  # You should be using ActiveRecord CRUD methods to aid you.
+  # E.g. Planet.where(planet_type: "gas giant"), etc.
+
+  erb :'members/index'
+end
+
 get '/starships/new' do
   erb :'starships/new'
 end
@@ -50,11 +59,45 @@ post '/starships/new' do
       @errors += "Please provide a class for your ship.<br>"
     end
 
-    if @location.strip == "" || !@url.include?("http")
+    if @location.strip == ""
       @errors += "Please provide a location for your ship.<br>"
     end
+    erb :'starships/new'
   end
-  erb :'starships/new'
+end
+
+post '/crew-members' do
+  @first_name = params["first_name"]
+  @last_name = params["last_name"]
+  @specialty = params["specialty"]
+  @ship = Ship.find(params["ship"])
+
+  if @first_name.strip != "" && @last_name.strip != "" && @specialty.strip != ""
+    Member.create(
+      first_name: @first_name,
+      last_name: @last_name,
+      specialty: @specialty,
+      ship: @ship
+    )
+
+    flash[:notice] = 'New crew member was successfully created.'
+    redirect "/crew-members"
+  else
+    @errors = "Error!<br>"
+
+    if @first_name.strip == ""
+      @errors += "Please provide a first name.<br>"
+    end
+
+    if @last_name.strip == ""
+      @errors += "Please provide a last name.<br>"
+    end
+
+    if @specialty.strip == ""
+      @errors += "Please provide a specialty for your crew member.<br>"
+    end
+  end
+  erb :'starships/show'
 end
 
 get '/starships/:id' do

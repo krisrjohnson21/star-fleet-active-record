@@ -1,6 +1,6 @@
 <h1>Mission Details Page for <%= @ship.name %></h1>
 
-<br><h3 class="error"><%= @success %></h3>
+<h3 class="error"><%= @success %></h3>
 
 <p>
   <strong>Ship Name: </strong><%= @ship.name %>
@@ -17,3 +17,30 @@
 <h4>
   <a href="/starships/new">Add A New Starship</a>
 </h4>
+<br  />
+<br  />
+
+<h3>Add A New Crew Member</h3>
+
+<h3 class="error"><%= @errors %></h3>
+
+<form action="/crew-members" method="post">
+  <label for="first_name">Crew Member First Name:
+    <input type="text" id="first_name" name="first_name" value="<%= @first_name %>">
+  </label>
+
+  <label for="last_name">Crew Member Last Name:
+    <input type="text" id="last_name" name="last_name" value="<%= @last_name %>">
+  </label>
+
+  <label for="specialty">Crew Member Specialty:
+    <input type="text" id="specialty" name="specialty" value="<%= @specialty %>">
+  </label>
+
+  <label for="ship">
+    <input type="hidden" id="ship" name="ship" value="<%= @ship.id %>">
+  </label>
+
+  <input type="Submit" value="Add Crew Member">
+</form>
+<br />
